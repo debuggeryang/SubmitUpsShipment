@@ -291,6 +291,8 @@
             </div>
         </div>
     </section>
+
+
     <section class="admin__page-section" id="ups_package_template" style="display:none;">
         <div class="admin__page-section-title">
             <span class="title">
@@ -305,6 +307,7 @@
                 </button>
             </div>
         </div>
+
         <div class="admin__control-table-wrapper admin__page-subsection">
             <table class="data-table admin__control-table">
                 <thead>
@@ -342,7 +345,7 @@
                                     <?php else: ?>
                                         class="admin__control-select"
                                     <?php endif; ?>>
-                                <?php foreach ($block->getContainers() as $key => $value): ?>
+                                <?php foreach ($block->getUpsContainers() as $key => $value): ?>
                                     <option value="<?php /* @escapeNotVerified */ echo $key ?>" >
                                         <?php /* @escapeNotVerified */ echo $value ?>
                                     </option>
