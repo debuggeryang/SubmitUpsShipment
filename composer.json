@@ -1,0 +1,19 @@
+{
+    "name": "BiFang/SubmitUpsShipment",
+    "description": "",
+    "require": {
+        "php": "~5.5.0|~5.6.0|~7.0.0",
+        "dhl/module-shipping-m2": "0.10.3",
+        "ups/shipping": "2.0.4"
+    },
+    "type": "magento2-module",
+    "version": "0.0.1",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "BiFang\\SubmitUpsShipment\\": ""
+        }
+    }
+}

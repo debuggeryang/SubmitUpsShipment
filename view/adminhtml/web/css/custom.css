@@ -1,0 +1,8 @@
+.create_shipping_label.admin__control-checkbox:not(:checked)._indeterminate+label:before,
+.create_shipping_label.admin__control-checkbox:not(:checked):indeterminate+label:before {
+  color: #514943;
+    content: '';
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
