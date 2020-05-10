@@ -166,6 +166,7 @@ class Packaging extends MagentoPackaging
             $storeId
         );
         if ($carrier) {
+
             $params = new DataObject(
                 [
                     'method'            => $order->getShippingMethod(true)->getMethod(),
@@ -173,7 +174,10 @@ class Packaging extends MagentoPackaging
                     'country_recipient' => $address->getCountryId(),
                 ]
             );
-            return $carrier->getContainerTypes($params);
+
+            $types = $carrier->getContainerTypes($params);
+            $this->zend_logger->info($types);
+            return $types;
         }
         return [];
     }
@@ -188,7 +192,7 @@ class Packaging extends MagentoPackaging
         $order = $this->getShipment()->getOrder();
         $storeId = $this->getShipment()->getStoreId();
         $address = $order->getShippingAddress();
-        $carrier = $this->_carrierFactory->create("upsshipping", $storeId);
+        $carrier = $this->_carrierFactory->create("ups", $storeId);
 
         $countryShipper = $this->_scopeConfig->getValue(
             \Magento\Sales\Model\Order\Shipment::XML_PATH_STORE_COUNTRY_ID,
@@ -196,7 +200,6 @@ class Packaging extends MagentoPackaging
             $storeId
         );
         if ($carrier) {
-          $this->zend_logger->info("We have got ups carrier");
             $params = new \Magento\Framework\DataObject(
                 [
                     'method' => $order->getShippingMethod(true)->getMethod(),
@@ -205,11 +208,11 @@ class Packaging extends MagentoPackaging
                 ]
             );
 
-            $this->zend_logger->info($params->toJson());
-
-            return $carrier->getContainerTypes($params);
+            $types = $carrier->getContainerTypes($params);
+            $this->zend_logger->info(get_class($carrier));
+            $this->zend_logger->info($types);
+            return $types;
         }
-          $this->zend_logger->info("We cannot get ups carrier");
         return [];
     }
     /**
