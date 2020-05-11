@@ -299,7 +299,7 @@
                 <?php /* @escapeNotVerified */ echo __('Package') ?> <span data-role="package-number"></span>
             </span>
             <div class="actions _primary">
-                <button type="button" class="action-secondary" data-action="package-save-items" onclick="packaging.packItems(this);">
+                <button type="button" class="action-secondary" data-action="package-save-items" onclick="packaging.upsPackItems(this);">
                     <span><?php /* @escapeNotVerified */ echo __('Add Selected Product(s) to Package') ?></span>
                 </button>
                 <button type="button" class="action-secondary" data-action="package-add-items" onclick="packaging.getItemsForPack(this);">

@@ -88,8 +88,8 @@ class Packaging extends MagentoPackaging
         $this->scopeConfig = $context->getScopeConfig();
         $this->moduleConfig = $moduleConfig;
         $this->escaper = $escaper;
-        $this->zend_logger = new \Zend\Log\Logger();
-        $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
+        // $this->zend_logger = new \Zend\Log\Logger();
+        // $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
         parent::__construct($context, $jsonEncoder, $sourceSizeModel, $coreRegistry, $carrierFactory, $data);
     }
@@ -150,14 +150,14 @@ class Packaging extends MagentoPackaging
      */
     public function getContainers()
     {
-        $this->zend_logger->info("BiFang Packaging Block Get DHL Containers");
+        // $this->zend_logger->info("BiFang Packaging Block Get DHL Containers");
         $order = $this->getShipment()->getOrder();
         $storeId = $this->getShipment()->getStoreId();
         $address = $order->getShippingAddress();
         $carrier = $this->_carrierFactory->create($order->getShippingMethod(true)->getCarrierCode(), $storeId);
 
 
-        $this->zend_logger->info($order->getShippingMethod(true)->getCarrierCode());
+        // $this->zend_logger->info($order->getShippingMethod(true)->getCarrierCode());
 
 
         $countryShipper = $this->_scopeConfig->getValue(
@@ -176,7 +176,7 @@ class Packaging extends MagentoPackaging
             );
 
             $types = $carrier->getContainerTypes($params);
-            $this->zend_logger->info($types);
+            // $this->zend_logger->info($types);
             return $types;
         }
         return [];
@@ -188,7 +188,7 @@ class Packaging extends MagentoPackaging
      */
     public function getUpsContainers()
     {
-        $this->zend_logger->info("BiFang Packaging Block Get UPS Containers");
+        // $this->zend_logger->info("BiFang Packaging Block Get UPS Containers");
         $order = $this->getShipment()->getOrder();
         $storeId = $this->getShipment()->getStoreId();
         $address = $order->getShippingAddress();
@@ -209,8 +209,8 @@ class Packaging extends MagentoPackaging
             );
 
             $types = $carrier->getContainerTypes($params);
-            $this->zend_logger->info(get_class($carrier));
-            $this->zend_logger->info($types);
+            // $this->zend_logger->info(get_class($carrier));
+            // $this->zend_logger->info($types);
             return $types;
         }
         return [];

@@ -8,4 +8,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
   <preference for="Dhl\Shipping\Observer\ChangePackagingTemplateObserver" type="BiFang\SubmitUpsShipment\Observer\ChangePackagingTemplateObserver" />
   <preference for="Dhl\Shipping\Block\Adminhtml\Order\Shipment\Packaging" type="BiFang\SubmitUpsShipment\Block\Adminhtml\Order\Shipment\Packaging" />
+  <preference for="Magento\Shipping\Model\Shipping\LabelGenerator" type="BiFang\SubmitUpsShipment\Model\Shipping\LabelGenerator" />
+  <preference for="Magento\Shipping\Model\Shipping\Labels" type="BiFang\SubmitUpsShipment\Model\Shipping\Labels" />
+
 </config>
