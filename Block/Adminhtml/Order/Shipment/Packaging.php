@@ -88,8 +88,8 @@ class Packaging extends MagentoPackaging
         $this->scopeConfig = $context->getScopeConfig();
         $this->moduleConfig = $moduleConfig;
         $this->escaper = $escaper;
-        // $this->zend_logger = new \Zend\Log\Logger();
-        // $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
+        $this->zend_logger = new \Zend\Log\Logger();
+        $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
         parent::__construct($context, $jsonEncoder, $sourceSizeModel, $coreRegistry, $carrierFactory, $data);
     }
@@ -123,8 +123,23 @@ class Packaging extends MagentoPackaging
      */
     public function isMetricUnit()
     {
+
         $unit = $this->getStoreWeightUnit();
         return $unit != Zend_Measure_Weight::LBS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUpsMetricUnit()
+    {
+
+      $carrier = $this->_carrierFactory->create('ups', $this->getShipment()->getStoreId());
+
+      $this->zend_logger->info("getting ups");
+      $unit = $carrier->getConfigData("unit_of_measure");
+      $this->zend_logger->info($unit);
+      return $unit != Zend_Measure_Weight::LBS;
     }
 
     /**

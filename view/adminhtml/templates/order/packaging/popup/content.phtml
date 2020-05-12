@@ -26,6 +26,7 @@
 <?php
     $girthEnabled = 0;
     $isMetric = $block->isMetricUnit();
+    $isUpsMetric = $block->isUpsMetricUnit();
     $configDefaultEct = $block->getDefaultExportContentType();
     $configDefaultEctExplanation = $block->getDefaultExportContentTypeExplanation();
 
@@ -373,8 +374,14 @@
                             <select name="container_girth_dimension_units"
                                     class="options-units-dimensions measures admin__control-select"
                                     onchange="packaging.changeMeasures(this);">
-                                <option value="<?php /* @escapeNotVerified */ echo Zend_Measure_Length::INCH ?>" selected="selected" ><?php /* @escapeNotVerified */ echo __('in') ?></option>
-                                <option value="<?php /* @escapeNotVerified */ echo Zend_Measure_Length::CENTIMETER ?>" ><?php /* @escapeNotVerified */ echo __('cm') ?></option>
+                                    <option value="<?= $block->escapeHtmlAttr(Zend_Measure_Length::INCH) ?>"
+                                            <?php if(!$isUpsMetric): ?>selected="selected" <?php endif;?> >
+                                        <?= $block->escapeHtml(__('in')) ?>
+                                    </option>
+                                    <option value="<?= $block->escapeHtmlAttr(Zend_Measure_Length::CENTIMETER) ?>"
+                                            <?php if($isUpsMetric): ?>selected="selected" <?php endif; ?>>
+                                        <?= $block->escapeHtml(__('cm')) ?>
+                                    </option>
                             </select>
                         </td>
                             <?php endif; ?>
@@ -405,8 +412,13 @@
                                     <select name="container_weight_units"
                                             class="options-units-weight measures admin__control-select"
                                             onchange="packaging.changeMeasures(this);">
-                                        <option value="<?php /* @escapeNotVerified */ echo Zend_Measure_Weight::POUND ?>" selected="selected"  ><?php /* @escapeNotVerified */ echo __('lb') ?></option>
-                                        <option value="<?php /* @escapeNotVerified */ echo Zend_Measure_Weight::KILOGRAM ?>" ><?php /* @escapeNotVerified */ echo __('kg') ?></option>
+                                            <option value="<?= $block->escapeHtmlAttr(Zend_Measure_Weight::POUND) ?>"
+                                                <?= $isUpsMetric ? '' : 'selected="selected"' ?>>
+                                                <?= $block->escapeHtml(__('lb')) ?>
+                                            </option>
+                                            <option value="<?= $block->escapeHtmlAttr(Zend_Measure_Weight::KILOGRAM) ?>"
+                                                <?= $isUpsMetric ? 'selected="selected"' : '' ?>>
+                                                <?= $block->escapeHtml(__('kg')) ?>
                                     </select>
                                 <span class="admin__addon-prefix"></span>
                             </div>
@@ -430,8 +442,14 @@
                             <select name="container_dimension_units"
                                     class="options-units-dimensions measures admin__control-select"
                                     onchange="packaging.changeMeasures(this);">
-                                <option value="<?php /* @escapeNotVerified */ echo Zend_Measure_Length::INCH ?>" selected="selected" ><?php /* @escapeNotVerified */ echo __('in') ?></option>
-                                <option value="<?php /* @escapeNotVerified */ echo Zend_Measure_Length::CENTIMETER ?>" ><?php /* @escapeNotVerified */ echo __('cm') ?></option>
+                                    <option value="<?= $block->escapeHtmlAttr(Zend_Measure_Length::INCH) ?>"
+                                            <?php if(!$isUpsMetric): ?>selected="selected" <?php endif;?> >
+                                        <?= $block->escapeHtml(__('in')) ?>
+                                    </option>
+                                    <option value="<?= $block->escapeHtmlAttr(Zend_Measure_Length::CENTIMETER) ?>"
+                                            <?php if($isUpsMetric): ?>selected="selected" <?php endif; ?>>
+                                        <?= $block->escapeHtml(__('cm')) ?>
+                                    </option>
                             </select>
                         </td>
                         <?php if ($block->getDeliveryConfirmationTypes()): ?>
