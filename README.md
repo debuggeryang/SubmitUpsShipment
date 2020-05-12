@@ -17,4 +17,5 @@ This extension may have compatibility issues if Dhl_Shipping version is not 0.10
   - Now we can create UPS labels when creating new shipment.
   - Known issues:
     - UPS does not have checkboxes for "Dangerous Goods", "Authority to Leave", "Signature Required", ...
+    - UPS weight unit configuration cannot be applied
     - Once you close the packaging modal and switch to another carrier and open the modal again, the packaging template for the previous carrier is still there
