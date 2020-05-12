@@ -94,6 +94,8 @@ $girthEnabled = $block->isDisplayGirthValue() && $block->isGirthAllowed() ? 1 : 
         });
         jQuery(document).trigger('packaging:inited');
         jQuery(document).data('packagingInited', true);
+
+
     });
 </script>
 <?= /* @noEscape */ $block->getChildHtml('dhl_shipping_packaging_content') ?>

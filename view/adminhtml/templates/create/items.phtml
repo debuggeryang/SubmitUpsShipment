@@ -190,6 +190,11 @@ window.submitShipment = function(btn) {
     }
 
     if (checkbox && pickedId) {
+      // remove all existing packages
+      let existingPackagesDeleteButtons = jQuery('#packages_content .action-delete.DeletePackageBtn');
+      existingPackagesDeleteButtons.each(function() {
+        packaging.deletePackage(this);
+      });
       packaging.showWindow();
     } else {
       disableElements('submit-button');

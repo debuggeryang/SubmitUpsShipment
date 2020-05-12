@@ -19,3 +19,10 @@ This extension may have compatibility issues if Dhl_Shipping version is not 0.10
     - UPS does not have checkboxes for "Dangerous Goods", "Authority to Leave", "Signature Required", ...
     - UPS weight unit configuration cannot be applied
     - Once you close the packaging modal and switch to another carrier and open the modal again, the packaging template for the previous carrier is still there
+- 12-May-2020 0.0.2
+  - Fixed issues:
+    - UPS weight unit config can be applied correctly now.
+    - All existing package information will be removed once you close the packaging modal
+  - Known issues:
+    - UPS does not have checkboxes for "Dangerous Goods", "Authority to Leave", "Signature Required", ...
+    - UPS cannot get dangerous goods labels
