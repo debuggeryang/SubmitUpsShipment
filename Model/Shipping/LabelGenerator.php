@@ -58,8 +58,8 @@ class LabelGenerator extends \Magento\Shipping\Model\Shipping\LabelGenerator
         $this->scopeConfig = $scopeConfig;
         $this->trackFactory = $trackFactory;
         $this->filesystem = $filesystem;
-        $this->zend_logger = new \Zend\Log\Logger();
-        $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
+        // $this->zend_logger = new \Zend\Log\Logger();
+        // $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
     }
 
@@ -99,7 +99,7 @@ class LabelGenerator extends \Magento\Shipping\Model\Shipping\LabelGenerator
                 if (array_key_exists('dangerous_goods_paper', $inf)) {
                   $labelsContent[] = $inf['dangerous_goods_paper'];
                 } else {
-                  $this->zend_logger->info("It does not have dangerous_goods_paper");
+                  // $this->zend_logger->info("It does not have dangerous_goods_paper");
                 }
                 $trackingNumbers[] = $inf['tracking_number'];
             }

@@ -198,8 +198,8 @@ class Carrier extends \Magento\Ups\Model\Carrier
             $data
         );
         $this->httpClientFactory = $httpClientFactory ?: ObjectManager::getInstance()->get(ClientFactory::class);
-        $this->zend_logger = new \Zend\Log\Logger();
-        $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
+        // $this->zend_logger = new \Zend\Log\Logger();
+        // $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
     }
 
@@ -668,15 +668,12 @@ class Carrier extends \Magento\Ups\Model\Carrier
      */
     protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
     {
-
-      $this->zend_logger->info("do shipmentreqeust for ups");
-
         $this->_prepareShipmentRequest($request);
         $result = new \Magento\Framework\DataObject();
         $xmlRequest = $this->_formShipmentRequest($request);
 
-        $this->zend_logger->info($xmlRequest);
-        $e = new \Exception();
+        // $this->zend_logger->info($xmlRequest);
+        // $e = new \Exception();
         // throw $e;
 
         $xmlResponse = $this->_getCachedQuotes($xmlRequest);

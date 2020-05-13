@@ -27,3 +27,8 @@ This extension may have compatibility issues if Dhl_Shipping version is not 0.10
     - UPS does not have checkboxes for "Dangerous Goods", "Authority to Leave", "Signature Required", ...
     - UPS cannot get dangerous goods labels
     - Only have English language
+- 13-May-2020 0.0.3
+  - Fixed issues:
+    - We can send dangerous goods with UPS now
+    - Booking UPS dangerous goods can get the dangerous goods paper, it comes with the shipping labels
+    - We add German language support

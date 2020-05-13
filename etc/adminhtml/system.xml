@@ -15,10 +15,10 @@
                 <field id="dg_signatory_place" translate="label" type="text" sortOrder="1011" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Dangerous Goods Default Signatory Place</label>
                 </field>
-                <field id="dg_declaration_level" translate="label" type="select" sortOrder="1020" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <!-- <field id="dg_declaration_level" translate="label" type="select" sortOrder="1020" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Dangerous Goods Declaration Level</label>
                     <source_model>BiFang\SubmitUpsShipment\Model\Config\Source\DeclarationLevel</source_model>
-                </field>
+                </field> -->
                 <field id="dg_regulation" translate="label" type="select" sortOrder="1030" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Dangerous Goods Default Regulation</label>
                     <source_model>BiFang\SubmitUpsShipment\Model\Config\Source\Regulation</source_model>
