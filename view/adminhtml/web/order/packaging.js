@@ -564,8 +564,13 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
                   };
 
                   // add dangerous goods params
-                  if (pack.select('input[type="checkbox"][name="hazMat"][data-module="ups"]')[0].checked) {
+                  if (pack.select('input[type="checkbox"][name="haz-mat"][data-module="ups"]')[0].checked) {
                     packagesParams[packageId].dangerous_goods = true;
+                    packagesParams[packageId].dg_transport_mode = pack.select('select[name="transportation-mode"][data-module="ups"] option:selected').value;
+                    packagesParams[packageId].dg_regulation = pack.select('select[name="regulation"][data-module="ups"] option:selected').value;
+                    packagesParams[packageId].dg_proper_shipping_name = pack.select('input[type="text"][name="proper-shipping-name"][data-module="ups"]').text;
+                    packagesParams[packageId].dg_signatory_name = pack.select('input[type="text"][name="signatory-name"][data-module="ups"]').text;;
+                    packagesParams[packageId].dg_signatory_place = pack.select('input[type="text"][name="signatory-place"][data-module="ups"]').text;;
                   }
 
 
@@ -611,6 +616,11 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
                        // add dangerous goods param
                        if ('undefined' != typeof packagesParams[packageId]['dangerous_goods']) {
                          this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dangerous_goods]'] = true;
+                         this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dg_transport_mode]'] = packagesParams[packageId]['dg_transport_mode'];
+                         this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dg_regulation]'] = packagesParams[packageId]['dg_regulation'];
+                         this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dg_proper_shipping_name]'] = packagesParams[packageId]['dg_proper_shipping_name'];
+                         this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dg_signatory_name]'] = packagesParams[packageId]['dg_signatory_name'];
+                         this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dg_signatory_place]'] = packagesParams[packageId]['dg_signatory_place'];
                        }
 
                        if ('undefined' != typeof packagesParams[packageId]['size']) {

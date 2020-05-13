@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <ups>
+              <dg_signatory_name>Stefan</dg_signatory_name>
+              <dg_signatory_place>Tettnang</dg_signatory_place>
+              <dg_declaration_level>01</dg_declaration_level>
+              <dg_regulation>ADR</dg_regulation>
+              <dg_transportation_mode>Ground</dg_transportation_mode>
+            </ups>
+        </carriers>
+    </default>
+</config>

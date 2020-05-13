@@ -33,6 +33,12 @@
     $exportContentType            = isset($configDefaultEct)            ? $configDefaultEct            : '';
     $exportContentTypeExplanation = isset($configDefaultEctExplanation) ? $configDefaultEctExplanation : '';
 
+    $upsDGConfiguration = $block->getUpsDGConfiguration();
+    $upsDGRegulations = $upsDGConfiguration['regulations'];
+    $upsDGTransportationModes = $upsDGConfiguration['transportationModes'];
+    $upsDGDeclarationLevels = $upsDGConfiguration['declarationLevels'];
+    $upsDGDefaultSignatoryName = $upsDGConfiguration['defaultSignatoryName'];
+    $upsDGDefaultSignatoryPlace = $upsDGConfiguration['defaultSignatoryPlace'];
 ?>
 <div id="packaging_window">
     <div class="message message-warning" style="display: none"></div>
@@ -505,13 +511,61 @@
         </div>
         <div class="ups_shipping_package_info">
           <dl>
-            <h3>UPS Shipping Services</h3>
+            <h3><?php echo __('UPS Shipping Services')?></h3>
             <div class="ups-service-block-container">
               <div class="ups-service-block">
-                <label class="checkbox-label ">
-                  <input type="checkbox" class="checkbox" data-module="ups" name="hazMat" value="true">
+                <h4><?php echo __('Dangerous Goods')?></h4>
+                <label class="checkbox-label">
+                  <input type="checkbox" class="checkbox dd-select" data-module="ups" name="haz-mat" value="true">
                   <i class="custom-checkbox"></i>
-                  Dangerous Goods
+                  <?php echo __('Dangerous Goods (DG)')?>
+                </label>
+              </div>
+              <div class="ups-service-block">
+                <h4><?php echo __('DG Transportation Mode')?></h4>
+                <dd class="service-select ups-dg-transportation-mode dd-select">
+                  <select class="admin__control-select" data-module="ups" name="transportation-mode">
+                    <?php foreach ($upsDGTransportationModes as $upsDGTransportationMode): ?>
+                      <option value="<?php echo $upsDGTransportationMode['value']?>"
+                        <?php if($upsDGTransportationMode['selected']): ?>
+                          selected="selected"
+                        <?php endif; ?>
+                      >
+                        <?php echo __($upsDGTransportationMode['label'])?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </dd>
+              </div>
+              <div class="ups-service-block">
+                <h4><?php echo __('DG Regulation')?></h4>
+                <dd class="service-select ups-dg-regulations dd-select">
+                  <select class="admin__control-select" data-module="ups" name="regulation">
+                    <?php foreach ($upsDGRegulations as $upsDGRegulation): ?>
+                      <option value="<?php echo $upsDGRegulation['value']?>"
+                        <?php if($upsDGRegulation['selected']): ?>
+                          selected="selected"
+                        <?php endif; ?>
+                      >
+                        <?php echo __($upsDGRegulation['label'])?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </dd>
+              </div>
+              <div class="ups-service-block">
+                <h4><?php echo __('DG Goods\' Proper Shipping Name')?></h4>
+                  <input type="text" class="text dd-select" data-module="ups" name="proper-shipping-name">
+                </label>
+              </div>
+              <div class="ups-service-block">
+                <h4><?php echo __('DG Signatory Name')?></h4>
+                  <input type="text" class="text dd-select" data-module="ups" name="signatory-name" value="<?php echo $upsDGDefaultSignatoryName?>">
+                </label>
+              </div>
+              <div class="ups-service-block">
+                <h4><?php echo __('DG Signatory Place')?></h4>
+                  <input type="text" class="text dd-select" data-module="ups" name="signatory-place" value="<?php echo $upsDGDefaultSignatoryPlace?>">
                 </label>
               </div>
             </div>

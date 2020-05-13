@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="carriers">
+            <group id="ups">
+                <field id="dg_signatory_name" translate="label" type="text" sortOrder="1010" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Dangerous Goods Default Signatory Name</label>
+                </field>
+                <field id="dg_signatory_place" translate="label" type="text" sortOrder="1011" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Dangerous Goods Default Signatory Place</label>
+                </field>
+                <field id="dg_declaration_level" translate="label" type="select" sortOrder="1020" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Dangerous Goods Declaration Level</label>
+                    <source_model>BiFang\SubmitUpsShipment\Model\Config\Source\DeclarationLevel</source_model>
+                </field>
+                <field id="dg_regulation" translate="label" type="select" sortOrder="1030" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Dangerous Goods Default Regulation</label>
+                    <source_model>BiFang\SubmitUpsShipment\Model\Config\Source\Regulation</source_model>
+                </field>
+                <field id="dg_transportation_mode" translate="label" type="select" sortOrder="1030" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Dangerous Goods Default Transportation Mode</label>
+                    <source_model>BiFang\SubmitUpsShipment\Model\Config\Source\TransportationMode</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

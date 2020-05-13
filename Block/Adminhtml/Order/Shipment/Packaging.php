@@ -36,6 +36,9 @@ use Magento\Shipping\Block\Adminhtml\Order\Packaging as MagentoPackaging;
 use Magento\Shipping\Model\Carrier\Source\GenericInterface;
 use Magento\Shipping\Model\CarrierFactory;
 use Magento\Store\Model\ScopeInterface;
+use BiFang\SubmitUpsShipment\Model\Config\Source\DeclarationLevel;
+use BiFang\SubmitUpsShipment\Model\Config\Source\Regulation;
+use BiFang\SubmitUpsShipment\Model\Config\Source\TransportationMode;
 use Zend_Measure_Weight;
 
 /**
@@ -63,6 +66,9 @@ class Packaging extends MagentoPackaging
      */
     private $escaper;
 
+    protected $upsDeclarationLevel;
+    protected $upsRegulation;
+    protected $upsTransportMode;
     /**
      * Packaging constructor.
      *
@@ -83,11 +89,17 @@ class Packaging extends MagentoPackaging
         CarrierFactory $carrierFactory,
         ModuleConfigInterface $moduleConfig,
         Escaper $escaper,
+        DeclarationLevel $declarationLevel,
+        Regulation $regulation,
+        TransportationMode $transportMode,
         array $data = []
     ) {
         $this->scopeConfig = $context->getScopeConfig();
         $this->moduleConfig = $moduleConfig;
         $this->escaper = $escaper;
+        $this->upsDeclarationLevel = $declarationLevel;
+        $this->upsRegulation = $regulation;
+        $this->upsTransportMode = $transportMode;
         $this->zend_logger = new \Zend\Log\Logger();
         $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
@@ -230,6 +242,47 @@ class Packaging extends MagentoPackaging
         }
         return [];
     }
+
+
+    public function getUpsDGConfiguration() {
+      $carrier = $this->_carrierFactory->create("ups", $this->getShipment()->getStoreId());
+
+      $upsDGRegulation = $carrier->getConfigData("dg_regulation");
+      $upsDGTransportMode = $carrier->getConfigData("dg_transportation_mode");
+      $upsDGDeclarationLevel = $carrier->getConfigData("dg_declaration_level");
+      $upsDGSignatoryName = $carrier->getConfigData("dg_signatory_name");
+      $upsDGSignatoryPlace = $carrier->getConfigData("dg_signatory_place");
+
+      $regulations = $this->upsRegulation->toOptionArray();
+      $transportModes = $this->upsTransportMode->toOptionArray();
+      $declarationLevels = $this->upsDeclarationLevel->toOptionArray();
+
+      foreach ($regulations as &$regulation) {
+        if ($regulation['value'] == $upsDGRegulation) $regulation['selected'] = true;
+        else $regulation['selected'] = false;
+      }
+      foreach ($transportModes as &$transportMode) {
+        if ($transportMode['value'] == $upsDGTransportMode) $transportMode['selected'] = true;
+        else $transportMode['selected'] = false;
+      }
+      foreach ($declarationLevels as &$declarationLevel) {
+        if ($declarationLevel['value'] == $upsDGDeclarationLevel) $declarationLevel['selected'] = true;
+        else $declarationLevel['selected'] = false;
+      }
+
+
+      $dgConfiguration = array(
+        "regulations" => $regulations,
+        "transportationModes" => $transportModes,
+        "declarationLevels" => $declarationLevels,
+        "defaultSignatoryName" => $upsDGSignatoryName,
+        "defaultSignatoryPlace" => $upsDGSignatoryPlace
+      );
+
+
+      return $dgConfiguration;
+    }
+
     /**
      * Escape a string for the HTML attribute context.
      *

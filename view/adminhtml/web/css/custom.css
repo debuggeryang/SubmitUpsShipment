@@ -53,3 +53,7 @@
     transition-timing-function: ease-out, ease-out, linear;
     vertical-align: top;
 }
+.ups_shipping_package_info .dd-select {
+  margin-left: 0;
+  padding-left: 0;
+}
