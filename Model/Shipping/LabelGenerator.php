@@ -98,6 +98,11 @@ class LabelGenerator extends \Magento\Shipping\Model\Shipping\LabelGenerator
         foreach ($info as $inf) {
             if (!empty($inf['tracking_number']) && !empty($inf['label_content'])) {
                 $labelsContent[] = $inf['label_content'];
+                if (array_key_exists('dangerous_goods_paper', $inf)) {
+                  $labelsContent[] = $inf['dangerous_goods_paper'];
+                } else {
+                  $this->zend_logger->info("It does not have dangerous_goods_paper");
+                }
                 $trackingNumbers[] = $inf['tracking_number'];
             }
         }

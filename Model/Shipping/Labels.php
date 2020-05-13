@@ -88,7 +88,7 @@ class Labels extends \Magento\Shipping\Model\Shipping\Labels
      */
     public function requestToShipment(Shipment $orderShipment)
     {
-      $this->zend_logger->info("BiFang Labels");
+
         $admin = $this->_authSession->getUser();
         $order = $orderShipment->getOrder();
 
@@ -150,7 +150,6 @@ class Labels extends \Magento\Shipping\Model\Shipping\Labels
             );
         }
 
-        $this->zend_logger->info("start to send request");
         /** @var $request \Magento\Shipping\Model\Shipment\Request */
         $request = $this->_shipmentRequestFactory->create();
         $request->setOrderShipment($orderShipment);
@@ -165,8 +164,6 @@ class Labels extends \Magento\Shipping\Model\Shipping\Labels
         $request->setBaseCurrencyCode($baseCurrencyCode);
         $request->setStoreId($shipmentStoreId);
 
-        $this->zend_logger->info($request->toJson());
-        $this->zend_logger->info(get_class($shipmentCarrier));
         return $shipmentCarrier->requestToShipment($request);
     }
 

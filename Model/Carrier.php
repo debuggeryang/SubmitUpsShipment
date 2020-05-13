@@ -367,6 +367,12 @@ class Carrier extends \Magento\Ups\Model\Carrier
         $this->zend_logger->info("Extended Carrier");
 
         $packageParams = $request->getPackageParams();
+        if ($packageParams->getDangerousGoods()) {
+          $this->zend_logger->info($packageParams->toJson());
+        }
+
+
+
         $height = $packageParams->getHeight();
         $width = $packageParams->getWidth();
         $length = $packageParams->getLength();
@@ -523,6 +529,14 @@ class Carrier extends \Magento\Ups\Model\Carrier
             $referencePart->addChild('Value', $referenceData);
         }
 
+        if ($packageParams->getDangerousGoods()) {
+          $packageServiceOptionsPart = $packagePart->addChild('PackageServiceOptions');
+          $hazMatPart = $packageServiceOptionsPart->addChild('HazMat');
+          $hazMatPart->addChild('ProperShippingName', 'Lithium ion batteries');
+          $hazMatPart->addChild('RegulationSet', 'ADR');
+          $hazMatPart->addChild('TransportationMode', 'Ground');
+        }
+
         $deliveryConfirmation = $packageParams->getDeliveryConfirmation();
         if ($deliveryConfirmation) {
             /** @var $serviceOptionsNode Element */
@@ -558,13 +572,16 @@ class Carrier extends \Magento\Ups\Model\Carrier
             $this->getConfigData('shipper_number')
         );
 
-        // We add DGSignatoryInfo here
-        $dGSignatoryInfoPart = $shipmentPart->addChild('DGSignatoryInfo');
-        $dGSignatoryInfoPart->addChild('Name', 'Stefan');
-        $dGSignatoryInfoPart->addChild('Title', 'Manager');
-        $dGSignatoryInfoPart->addChild('Place', 'Tettnang');
-        $dGSignatoryInfoPart->addChild('Date', '20200512');
-        $dGSignatoryInfoPart->addChild('ShipperDeclaration', '01');
+        // We add DGSignatoryInfo here for dangerous goods
+        if ($packageParams->getDangerousGoods()) {
+          $dGSignatoryInfoPart = $shipmentPart->addChild('DGSignatoryInfo');
+          $dGSignatoryInfoPart->addChild('Name', 'Stefan');
+          $dGSignatoryInfoPart->addChild('Title', 'Manager');
+          $dGSignatoryInfoPart->addChild('Place', 'Tettnang');
+          $dGSignatoryInfoPart->addChild('Date', '20200512');
+          $dGSignatoryInfoPart->addChild('ShipperDeclaration', '01');
+        }
+
 
 
         if ($request->getPackagingType() != $this->configHelper->getCode(
@@ -593,5 +610,64 @@ class Carrier extends \Magento\Ups\Model\Carrier
         return $xmlRequest;
     }
 
+    /**
+     * Send and process shipment accept request
+     *
+     * @param Element $shipmentConfirmResponse
+     * @return \Magento\Framework\DataObject
+     */
+    protected function _sendShipmentAcceptRequest(Element $shipmentConfirmResponse)
+    {
+        $this->zend_logger->info("ShipmentAcceptRequest send?");
+        $xmlRequest = $this->_xmlElFactory->create(
+            ['data' => '<?xml version = "1.0" ?><ShipmentAcceptRequest/>']
+        );
+        $request = $xmlRequest->addChild('Request');
+        $request->addChild('RequestAction', 'ShipAccept');
+        $xmlRequest->addChild('ShipmentDigest', $shipmentConfirmResponse->ShipmentDigest);
+        $debugData = ['request' => $xmlRequest->asXML()];
 
+        try {
+            $ch = curl_init($this->getShipAcceptUrl());
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_xmlAccessRequest . $xmlRequest->asXML());
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, (bool)$this->getConfigFlag('mode_xml'));
+            $xmlResponse = curl_exec($ch);
+
+            $debugData['result'] = $xmlResponse;
+            $this->_setCachedQuotes($xmlRequest, $xmlResponse);
+        } catch (\Exception $e) {
+            $debugData['result'] = ['error' => $e->getMessage(), 'code' => $e->getCode()];
+            $xmlResponse = '';
+        }
+
+        try {
+            $response = $this->_xmlElFactory->create(['data' => $xmlResponse]);
+        } catch (\Exception $e) {
+            $debugData['result'] = ['error' => $e->getMessage(), 'code' => $e->getCode()];
+        }
+
+        $result = new \Magento\Framework\DataObject();
+        if (isset($response->Error)) {
+            $result->setErrors((string)$response->Error->ErrorDescription);
+        } else {
+            $shippingLabelContent = (string)$response->ShipmentResults->PackageResults->LabelImage->GraphicImage;
+            if (property_exists($response->ShipmentResults, 'DGPaperImage')) {
+                $shippingDGPaperImage = (string)$response->ShipmentResults->DGPaperImage;
+                $result->setDangerousGoodsPaper(base64_decode($shippingLabelContent));
+            }
+
+            $trackingNumber = (string)$response->ShipmentResults->PackageResults->TrackingNumber;
+
+            $result->setShippingLabelContent(base64_decode($shippingLabelContent));
+            $result->setTrackingNumber($trackingNumber);
+        }
+
+        $this->_debug($debugData);
+
+        return $result;
+    }
 }

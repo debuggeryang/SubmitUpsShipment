@@ -6,3 +6,50 @@
     font-size: 1.4rem;
     font-weight: 700;
 }
+.ups_shipping_package_info {
+    border: 1px solid rgb(255, 204, 0);
+    padding: 21px;
+    margin: 20px 0;
+}
+.ups-service-block-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.ups-service-block-container .ups-service-block {
+    flex: 0 1 250px;
+    margin: 10px;
+}
+.ups_shipping_package_info label.checkbox-label {
+    display: inline-block;
+    margin: .6em 0;
+    cursor: pointer;
+}
+.ups_shipping_package_info label.checkbox-label input:checked + i.custom-checkbox {
+    color: rgb(81, 73, 67);
+}
+.ups_shipping_package_info label.checkbox-label > input[type="checkbox"] {
+    visibility: hidden;
+}
+.ups_shipping_package_info label.checkbox-label i.custom-checkbox {
+    -webkit-font-smoothing: antialiased;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #adadad;
+    border-radius: 1px;
+    box-sizing: border-box;
+    color: rgba(81, 73, 67,0);
+    display: block;
+    float: left;
+    font-family: 'Admin Icons';
+    font-size: 1.1rem;
+    line-height: 125%;
+    font-style: normal;
+    width: 16px;
+    height: 16px;
+    margin: 1px 0 0 0;
+    text-align: center;
+    transition-delay: 0s, 0s, 0s;
+    transition-duration: 0.1s, 0.1s, 0.1s;
+    transition-property: font-size, color, border-color;
+    transition-timing-function: ease-out, ease-out, linear;
+    vertical-align: top;
+}

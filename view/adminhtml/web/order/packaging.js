@@ -562,6 +562,13 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
                       weight_units:               pack.select('select[name="container_weight_units"]')[0].value,
                       dimension_units:            pack.select('select[name="container_dimension_units"]')[0].value
                   };
+
+                  // add dangerous goods params
+                  if (pack.select('input[type="checkbox"][name="hazMat"][data-module="ups"]')[0].checked) {
+                    packagesParams[packageId].dangerous_goods = true;
+                  }
+
+
                   if (isNaN(packagesParams[packageId]['customs_value'])) {
                       packagesParams[packageId]['customs_value'] = 0;
                   }
@@ -600,6 +607,11 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
                        this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dimension_units]']        = packagesParams[packageId]['dimension_units'];
                        this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[content_type]']           = packagesParams[packageId]['content_type'];
                        this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[content_type_other]']     = packagesParams[packageId]['content_type_other'];
+
+                       // add dangerous goods param
+                       if ('undefined' != typeof packagesParams[packageId]['dangerous_goods']) {
+                         this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[dangerous_goods]'] = true;
+                       }
 
                        if ('undefined' != typeof packagesParams[packageId]['size']) {
                            this.paramsCreateLabelRequest['packages['+packageId+']'+'[params]'+'[size]'] = packagesParams[packageId]['size'];
