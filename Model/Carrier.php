@@ -432,7 +432,7 @@ class Carrier extends \Magento\Ups\Model\Carrier
         $shipToPart->addChild('AttentionName', $request->getRecipientContactPersonName());
         $shipToPart->addChild(
             'CompanyName',
-            $request->getRecipientContactCompanyName() ? $request->getRecipientContactCompanyName() : 'N/A'
+            $request->getRecipientContactCompanyName() ? $request->getRecipientContactCompanyName() : $request->getRecipientContactPersonName()
         );
         $shipToPart->addChild('PhoneNumber', $request->getRecipientContactPhoneNumber());
 
