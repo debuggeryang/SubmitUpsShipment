@@ -85,13 +85,11 @@ class LabelGenerator extends \Magento\Shipping\Model\Shipping\LabelGenerator
         $shipment->setPackages($request->getParam('packages'));
         $response = $this->labelFactory->create()->requestToShipment($shipment);
         if ($response->hasErrors()) {
-          $this->zend_logger->info("errors when creating label");
             throw new \Magento\Framework\Exception\LocalizedException(__($response->getErrors()));
         }
         if (!$response->hasInfo()) {
             throw new \Magento\Framework\Exception\LocalizedException(__('Response info is not exist.'));
         }
-        $this->zend_logger->info("label created");
         $labelsContent = [];
         $trackingNumbers = [];
         $info = $response->getInfo();

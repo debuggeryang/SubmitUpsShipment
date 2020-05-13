@@ -198,7 +198,6 @@ class Carrier extends \Magento\Ups\Model\Carrier
             $data
         );
         $this->httpClientFactory = $httpClientFactory ?: ObjectManager::getInstance()->get(ClientFactory::class);
-
         $this->zend_logger = new \Zend\Log\Logger();
         $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
@@ -364,14 +363,7 @@ class Carrier extends \Magento\Ups\Model\Carrier
      */
     protected function _formShipmentRequest(\Magento\Framework\DataObject $request)
     {
-        $this->zend_logger->info("Extended Carrier");
-
         $packageParams = $request->getPackageParams();
-        if ($packageParams->getDangerousGoods()) {
-          $this->zend_logger->info($packageParams->toJson());
-        }
-
-
 
         $height = $packageParams->getHeight();
         $width = $packageParams->getWidth();
@@ -615,7 +607,6 @@ class Carrier extends \Magento\Ups\Model\Carrier
      */
     protected function _sendShipmentAcceptRequest(Element $shipmentConfirmResponse)
     {
-        $this->zend_logger->info("ShipmentAcceptRequest send?");
         $xmlRequest = $this->_xmlElFactory->create(
             ['data' => '<?xml version = "1.0" ?><ShipmentAcceptRequest/>']
         );
@@ -667,4 +658,74 @@ class Carrier extends \Magento\Ups\Model\Carrier
 
         return $result;
     }
+
+    /**
+     * Do shipment request to carrier web service, obtain Print Shipping Labels and process errors in response
+     *
+     * @param \Magento\Framework\DataObject $request
+     * @return \Magento\Framework\DataObject
+     * @throws \Exception
+     */
+    protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
+    {
+
+      $this->zend_logger->info("do shipmentreqeust for ups");
+
+        $this->_prepareShipmentRequest($request);
+        $result = new \Magento\Framework\DataObject();
+        $xmlRequest = $this->_formShipmentRequest($request);
+
+        $this->zend_logger->info($xmlRequest);
+        $e = new \Exception();
+        // throw $e;
+
+        $xmlResponse = $this->_getCachedQuotes($xmlRequest);
+
+        if ($xmlResponse === null) {
+            $url = $this->getShipConfirmUrl();
+
+            $debugData = ['request' => $xmlRequest];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlRequest);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, (bool)$this->getConfigFlag('mode_xml'));
+            $xmlResponse = curl_exec($ch);
+            if ($xmlResponse === false) {
+                throw new \Exception(curl_error($ch));
+            } else {
+                $debugData['result'] = $xmlResponse;
+                $this->_setCachedQuotes($xmlRequest, $xmlResponse);
+            }
+        }
+
+        try {
+            $response = $this->_xmlElFactory->create(['data' => $xmlResponse]);
+        } catch (\Exception $e) {
+            $debugData['result'] = ['error' => $e->getMessage(), 'code' => $e->getCode()];
+            $result->setErrors($e->getMessage());
+        }
+
+        if (isset(
+                $response->Response->Error
+            ) && in_array(
+                $response->Response->Error->ErrorSeverity,
+                ['Hard', 'Transient']
+            )
+        ) {
+            $result->setErrors((string)$response->Response->Error->ErrorDescription);
+        }
+
+        $this->_debug($debugData);
+
+        if ($result->hasErrors() || empty($response)) {
+            return $result;
+        } else {
+            return $this->_sendShipmentAcceptRequest($response);
+        }
+    }
+
 }

@@ -72,9 +72,6 @@ class Labels extends \Magento\Shipping\Model\Shipping\Labels
             $authSession,
             $request
         );
-        $this->zend_logger = new \Zend\Log\Logger();
-        $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
-
     }
 
     /**

@@ -149,14 +149,12 @@ function bindSendEmail() {
 window.toggleCreateLabelCheckbox = function(tickedOption) {
 
     if (tickedOption === "create_shipping_label_ups") {
-      console.log("switch to " + tickedOption);
       packaging.template = $("ups_package_template");
       packaging.setConfirmPackagingCallback(function(){
           packaging.setParamsCreateLabelRequest($('edit_form').serialize(true));
           packaging.upsSendCreateLabelRequest();
       });
     } else {
-      console.log("switch to " + tickedOption);
       packaging.template = $("package_template");
       packaging.setConfirmPackagingCallback(function(){
           packaging.setParamsCreateLabelRequest($('edit_form').serialize(true));

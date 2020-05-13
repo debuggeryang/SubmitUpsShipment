@@ -30,8 +30,6 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
 
         //overwritten
         sendCreateLabelRequest: function () {
-          console.log("execute dhlSendCreateLabelRequest");
-          console.log("url: " + this.createLabelUrl);
             var package = this;
             if (!this.validate()) {
                 this.messages.show().update(this.validationErrorMsg);
@@ -170,7 +168,6 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
 
         //overwritten
         packItems: function (obj) {
-          console.log("execute dhlPackItems");
             var anySelected = false;
             var packageBlock = $(obj).up('[id^="package_block"]');
             var packageId = this.getPackageId(packageBlock);
@@ -435,7 +432,6 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
 
         upsPackItems: function(obj) {
 
-            console.log("execute upsPackItems");
           var anySelected = false;
           var packageBlock = $(obj).up('[id^="package_block"]');
           var packageId = this.getPackageId(packageBlock);
@@ -534,8 +530,6 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
       },
 
         upsSendCreateLabelRequest: function() {
-          console.log("execute upsSendCreateLabelRequest");
-          console.log("url: " + this.createLabelUrl);
           var package = this;
           if (!this.validate()) {
               this.messages.show().update(this.validationErrorMsg);

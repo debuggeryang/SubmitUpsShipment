@@ -34,8 +34,6 @@ class ChangePackagingTemplateObserver extends \Dhl\Shipping\Observer\ChangePacka
     ) {
         $this->coreRegistry = $registry;
         $this->moduleConfig = $moduleConfig;
-        // $this->zend_logger = new \Zend\Log\Logger();
-        // $this->zend_logger->addWriter(new \Zend\Log\Writer\Stream(BP . '/var/log/ups.log'));
 
     }
 
@@ -44,7 +42,6 @@ class ChangePackagingTemplateObserver extends \Dhl\Shipping\Observer\ChangePacka
      */
     public function execute(Observer $observer)
     {
-      // $this->zend_logger->info("observer overwritten");
         $block = $observer->getEvent()->getBlock();
         if ($block instanceof \Magento\Shipping\Block\Adminhtml\Order\Packaging
             && $block->getNameInLayout() === 'shipment_packaging'
