@@ -566,13 +566,12 @@ define(["underscore", "prototype", "Magento_Shipping/order/packaging"], function
                   // add dangerous goods params
                   if (pack.select('input[type="checkbox"][name="haz-mat"][data-module="ups"]')[0].checked) {
                     packagesParams[packageId].dangerous_goods = true;
-                    packagesParams[packageId].dg_transport_mode = pack.select('select[name="transportation-mode"][data-module="ups"] option:selected').value;
-                    packagesParams[packageId].dg_regulation = pack.select('select[name="regulation"][data-module="ups"] option:selected').value;
-                    packagesParams[packageId].dg_proper_shipping_name = pack.select('input[type="text"][name="proper-shipping-name"][data-module="ups"]').text;
-                    packagesParams[packageId].dg_signatory_name = pack.select('input[type="text"][name="signatory-name"][data-module="ups"]').text;;
-                    packagesParams[packageId].dg_signatory_place = pack.select('input[type="text"][name="signatory-place"][data-module="ups"]').text;;
+                    packagesParams[packageId].dg_transport_mode = pack.select('select[name="transportation-mode"][data-module="ups"] option:selected')[0].value;
+                    packagesParams[packageId].dg_regulation = pack.select('select[name="regulation"][data-module="ups"] option:selected')[0].value;
+                    packagesParams[packageId].dg_proper_shipping_name = pack.select('input[type="text"][name="proper-shipping-name"][data-module="ups"]')[0].value;
+                    packagesParams[packageId].dg_signatory_name = pack.select('input[type="text"][name="signatory-name"][data-module="ups"]')[0].value;
+                    packagesParams[packageId].dg_signatory_place = pack.select('input[type="text"][name="signatory-place"][data-module="ups"]')[0].value;
                   }
-
 
                   if (isNaN(packagesParams[packageId]['customs_value'])) {
                       packagesParams[packageId]['customs_value'] = 0;

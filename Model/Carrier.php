@@ -532,9 +532,9 @@ class Carrier extends \Magento\Ups\Model\Carrier
         if ($packageParams->getDangerousGoods()) {
           $packageServiceOptionsPart = $packagePart->addChild('PackageServiceOptions');
           $hazMatPart = $packageServiceOptionsPart->addChild('HazMat');
-          $hazMatPart->addChild('ProperShippingName', 'Lithium ion batteries');
-          $hazMatPart->addChild('RegulationSet', 'ADR');
-          $hazMatPart->addChild('TransportationMode', 'Ground');
+          $hazMatPart->addChild('ProperShippingName', $packageParams->getDgProperShippingName());
+          $hazMatPart->addChild('RegulationSet', $packageParams->getDgRegulation());
+          $hazMatPart->addChild('TransportationMode', $packageParams->getDgTransportMode());
         }
 
         $deliveryConfirmation = $packageParams->getDeliveryConfirmation();
@@ -575,11 +575,8 @@ class Carrier extends \Magento\Ups\Model\Carrier
         // We add DGSignatoryInfo here for dangerous goods
         if ($packageParams->getDangerousGoods()) {
           $dGSignatoryInfoPart = $shipmentPart->addChild('DGSignatoryInfo');
-          $dGSignatoryInfoPart->addChild('Name', 'Stefan');
-          $dGSignatoryInfoPart->addChild('Title', 'Manager');
-          $dGSignatoryInfoPart->addChild('Place', 'Tettnang');
-          $dGSignatoryInfoPart->addChild('Date', '20200512');
-          $dGSignatoryInfoPart->addChild('ShipperDeclaration', '01');
+          $dGSignatoryInfoPart->addChild('Name', $packageParams->getDgSignatoryName());
+          $dGSignatoryInfoPart->addChild('Place', $packageParams->getDgSignatoryPlace());
         }
 
 
