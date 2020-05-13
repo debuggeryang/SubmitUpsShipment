@@ -607,6 +607,8 @@ class Carrier extends \Magento\Ups\Model\Carrier
      */
     protected function _sendShipmentAcceptRequest(Element $shipmentConfirmResponse)
     {
+
+
         $xmlRequest = $this->_xmlElFactory->create(
             ['data' => '<?xml version = "1.0" ?><ShipmentAcceptRequest/>']
         );
@@ -624,7 +626,6 @@ class Carrier extends \Magento\Ups\Model\Carrier
             curl_setopt($ch, CURLOPT_TIMEOUT, 30);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, (bool)$this->getConfigFlag('mode_xml'));
             $xmlResponse = curl_exec($ch);
-
             $debugData['result'] = $xmlResponse;
             $this->_setCachedQuotes($xmlRequest, $xmlResponse);
         } catch (\Exception $e) {
@@ -659,6 +660,7 @@ class Carrier extends \Magento\Ups\Model\Carrier
         return $result;
     }
 
+
     /**
      * Do shipment request to carrier web service, obtain Print Shipping Labels and process errors in response
      *
@@ -672,13 +674,13 @@ class Carrier extends \Magento\Ups\Model\Carrier
         $result = new \Magento\Framework\DataObject();
         $xmlRequest = $this->_formShipmentRequest($request);
 
-        // $this->zend_logger->info($xmlRequest);
         // $e = new \Exception();
         // throw $e;
 
-        $xmlResponse = $this->_getCachedQuotes($xmlRequest);
+        // _getCachedQuotes disabled
+        // $xmlResponse = $this->_getCachedQuotes($xmlRequest);
+        // if ($xmlResponse === null) {
 
-        if ($xmlResponse === null) {
             $url = $this->getShipConfirmUrl();
 
             $debugData = ['request' => $xmlRequest];
@@ -697,7 +699,7 @@ class Carrier extends \Magento\Ups\Model\Carrier
                 $debugData['result'] = $xmlResponse;
                 $this->_setCachedQuotes($xmlRequest, $xmlResponse);
             }
-        }
+        // }
 
         try {
             $response = $this->_xmlElFactory->create(['data' => $xmlResponse]);
