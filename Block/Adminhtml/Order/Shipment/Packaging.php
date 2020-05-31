@@ -200,6 +200,37 @@ class Packaging extends MagentoPackaging
         return [];
     }
 
+    /**
+     * @return array
+     */
+    public function getDhlContainers()
+    {
+
+        $order = $this->getShipment()->getOrder();
+        $storeId = $this->getShipment()->getStoreId();
+        $address = $order->getShippingAddress();
+        $carrier = $this->_carrierFactory->create("dhlshipping", $storeId);
+
+        $countryShipper = $this->_scopeConfig->getValue(
+            Shipment::XML_PATH_STORE_COUNTRY_ID,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+        if ($carrier) {
+
+            $params = new DataObject(
+                [
+                    'method'            => $order->getShippingMethod(true)->getMethod(),
+                    'country_shipper'   => $countryShipper,
+                    'country_recipient' => $address->getCountryId(),
+                ]
+            );
+
+            $types = $carrier->getContainerTypes($params);
+            return $types;
+        }
+        return [];
+    }
 
     /**
      * @return array

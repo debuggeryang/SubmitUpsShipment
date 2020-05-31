@@ -51,9 +51,10 @@ class ChangePackagingTemplateObserver extends \Dhl\Shipping\Observer\ChangePacka
             /** @var \Magento\Sales\Api\Data\OrderInterface|\Magento\Sales\Model\Order $order */
             $order = $currentShipment->getOrder();
             $shippingMethod = $order->getShippingMethod(true);
-            if ($shippingMethod->getData('carrier_code') === Carrier::CODE) {
+            // Since tablerate initially is selected but ups/dhl is applied in the end, we disable the carrier_code check here
+            // if ($shippingMethod->getData('carrier_code') === Carrier::CODE) {
                 $block->setTemplate('BiFang_SubmitUpsShipment::order/packaging/popup.phtml');
-            }
+            // }
         }
     }
 }

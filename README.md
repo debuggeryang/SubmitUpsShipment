@@ -13,6 +13,7 @@ This extension may have compatibility issues if Dhl_Shipping version is not 0.10
 
 #### Update Log:
 
+
 - 11-May-2020 0.0.1
   - Now we can create UPS labels when creating new shipment.
   - Known issues:
@@ -32,3 +33,6 @@ This extension may have compatibility issues if Dhl_Shipping version is not 0.10
     - We can send dangerous goods with UPS now
     - Booking UPS dangerous goods can get the dangerous goods paper, it comes with the shipping labels
     - We add German language support
+- 31-May-2020 0.04
+  - Fixed issues:
+    - We can book multi shipments for one order now
